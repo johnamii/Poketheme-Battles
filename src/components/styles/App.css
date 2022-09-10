@@ -1,0 +1,121 @@
+.home-screen {
+  background-color: #191b23;
+
+  height: 100vh;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  background-color: black;
+  color: white;
+
+  border-bottom: 1px solid lightskyblue;
+  border-bottom-left-radius: 50mm;
+  border-bottom-right-radius: 50mm;
+
+  height: 10%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.home-center{
+  position: absolute;
+  width: 100%;
+  height: 80%;
+  top: 10%;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.pokeball{
+  border-style: solid;
+  border-color: #191212;
+  border-radius: 300px;
+  border-width: 1/2vw;
+  background-color: transparent;
+  height: 90%;
+  width: 34%;
+  overflow: hidden;
+}
+
+.ball-upper-half{
+  height:50%;
+  width:100%;
+  position: relative;
+
+  background-color: #a21c1c;
+}
+
+.ball-center-line{
+  background-color: #191b23;
+  width: 40%;
+  height: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+}
+
+.ball-center-circle{
+  border-radius: 100px;
+  background-color: #191b23;
+
+  height: 375%;
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Open-Game-Button{
+  color:black;
+  background-color: whitesmoke;
+
+  border: 1mm double lightskyblue;
+  border-radius: 100%;
+
+  width: 12vh;
+  height: 12vh;
+  position: relative;
+
+  font-size: large;
+}
+
+.ball-lower-half{
+  height: 50%;
+  width:100%;
+  position: relative;
+  background-color: whitesmoke;
+}
+
+
+
+.App-footer{
+  background-color: black;
+  color: white;
+
+  border-top-color: lightskyblue;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-left-radius: 50mm;
+  border-top-right-radius: 50mm;
+
+  height: 10%;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  position: absolute;
+  bottom: 0;
+  align-self: center;
+}

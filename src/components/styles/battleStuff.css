@@ -1,0 +1,138 @@
+
+.trainer-outer-circle{
+    height: 230px;
+    width: 220px;
+    border-radius: 200px; 
+
+    margin: 15px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.circle-row{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty-switch-button{
+    border-color: lightskyblue;
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    
+    width: 60px;
+    height: 60px;   
+    border-radius: 30px;
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+.switch-button{
+    border-color: lightskyblue;
+    color: white;
+    background-color:#3f6654;
+
+    width: 60px;
+    height: 60px;   
+    border-radius: 30px;
+    margin-left: 7px;
+    margin-right: 7px; 
+
+    font-size: x-small;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    overflow: hidden;
+}
+
+.switch-button-text{
+    font-size: 45%;
+    position: absolute;
+    margin-left: 15px;
+}
+
+.switch-sprite-left{
+    height: 200%;
+    width: 200%;
+    position:relative;
+    bottom: 14px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.switch-sprite-right{
+    height: 200%;
+    width: 200%;
+    position:relative;
+    bottom: 14px;
+}
+
+.trainer-inner-circle{
+    border-color: white;
+    background-color: #2f2834;
+    border-style: double;
+
+    height: 65px;
+    width: 65px;
+    border-radius: 50px;
+    margin-left: 7px;
+    margin-right: 7px; 
+    overflow: hidden;
+}
+
+.trainer-sprite-left{
+    height: 110%;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.trainer-sprite-right{
+    height: 110%;
+}
+
+.move-bar{
+    background-color: black;
+    border: 1px solid lightskyblue;
+    border-radius: 2mm;
+    width: 50%;
+    height: 90%; 
+    
+    margin: auto;
+    position: relative;
+}
+
+.move-set{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.move-button{
+    color: black;
+    width: 18%;
+    height: 69%;
+    border-style: solid;
+    border-radius: 1mm;
+    border-width: 1%;
+    font-size: calc();
+    margin: 1%;
+}
+
+.empty-move-button{
+    width: 18%;
+    height: 69%;
+    background-color: #2e2e2e;
+    border-style: solid;
+    border-radius: 1mm;
+    border-width: 1px;
+    margin: 1%;
+}
