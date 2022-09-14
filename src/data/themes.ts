@@ -4,6 +4,16 @@ import { randInt } from '../sim/functions'
 import Pokemon from '../sim/pokemon';
 
 export const Themes: {[theme: string]: themeData} = {
+    Blank: {
+        name: "Blank",
+        description: '',
+        setSize: 0,
+        pokeSet: [],
+        teamSize: 1,
+        generateTeam(){
+            return [];
+        }
+    },
     StarterBrawl: {
         name: "Starter Brawl",
         description: '',
@@ -53,7 +63,22 @@ export const Themes: {[theme: string]: themeData} = {
             }
             return arr; // ARRAY OF TEAM
         }
+    },
+    MonkeMashup: {
+        name: "Monke Mashup",
+        description: '',
+        setSize: 1,
+        teamSize: 2,
+        pokeSet: [Pokedex.infernape],
+        generateTeam(){
+            return [new Pokemon({dex:Pokedex.infernape, set: Pokedex.infernape.presets[0]})];
+        }
     }
 
-//theme to add: 1 strong vs 6 weaker mons
+// THEME IDEAS:
+    // 1 strong vs 6 weaker mons
+    // mythical mayhem
+    // 6 weak mons vs 1 strong mon
+    // trainers swap team back and forth every battle
+    // monke moshpit
 }

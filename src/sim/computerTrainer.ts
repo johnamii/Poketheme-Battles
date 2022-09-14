@@ -18,10 +18,10 @@ class ComputerTrainer extends Trainer {
 
     randomBattleChoice(curMon: number): battleChoice{ // NEEDS TESTING
         let mon = this.team[curMon];
-        let coin = randInt(0, 2);
+        let coin = randInt(0, 5);
 
         // switch mon
-        if (this.getAliveTeamSize() > 1 && coin === 0){
+        if (this.getAliveTeamSize() > 1 && coin > 3){
             coin = randInt(0, this.getAvailableSwitchIndices(curMon).length);
             return { tr: this, move: false, index: this.getAvailableSwitchIndices(curMon)[coin]};
         }

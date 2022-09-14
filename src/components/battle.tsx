@@ -1,13 +1,13 @@
-import React, { ReactEventHandler, useEffect, useState, } from 'react'
+import React, { useEffect } from 'react'
 import '../components/styles/battleScreen.css'
 import Field from  './field'
 import Trainer from '../sim/trainer'
-import { MoveButton, TrainerCircle } from './battleStuff'
+import { MoveBar, TrainerCircle, EventLogBox } from './battleStuff'
 import Side from '../sim/side'
-import { battleChoice,} from '../data/globalTypes'
+import { battleChoice, battleEvent} from '../data/globalTypes'
 import { wait } from '@testing-library/user-event/dist/utils'
+import { setChoiceOrder, writeEvent } from '../sim/functions'
 
-type BCProps = { time: number };
 interface BattleProps{ sides: Side[]; activeTrainers: number; endFunc: any}
 interface BattleStates{
     side1CanContinue: boolean;
@@ -25,6 +25,7 @@ class Battle extends React.Component<BattleProps, BattleStates> {
 
         this.User.opponent = this.Opp;
         this.Opp.opponent = this.User;
+        this.LogEvent({text: "The battle has started.", dialog: true})
     }
 
     state: BattleStates = {
@@ -35,10 +36,18 @@ class Battle extends React.Component<BattleProps, BattleStates> {
         turnMayStart: true,
     }
 
+    eventLog: battleEvent[] = [];
+
     User = this.props.sides[0].trainers[0];
     Opp = this.props.sides[1].trainers[0];
     TMate?: Trainer;
     Opp2?: Trainer;
+
+    async LogEvent(event: battleEvent){
+        console.log(event.text);
+        this.eventLog.push(event);
+        await wait(750);
+    }
 
     flipControls(){ this.setState({controlsEnabled: !this.state.controlsEnabled}) }
 
@@ -56,10 +65,10 @@ class Battle extends React.Component<BattleProps, BattleStates> {
 
         return new Promise((resolve, reject) => { 
 
-            const waitForChoice = setInterval(() => { // check for button click
+            const waitForChoice = setInterval(() => {
                 this.timerCountDown();
 
-                if (this.state.battleChoice != temp && this.state.battleChoice){
+                if (this.state.battleChoice !== temp && this.state.battleChoice){
                     this.setState({battleTimer: 30})
                     clearInterval(waitForChoice);
                     this.flipControls();
@@ -72,54 +81,56 @@ class Battle extends React.Component<BattleProps, BattleStates> {
             }, 1000);
         })
     };
+
+    async fieldAliveChecks(choices: battleChoice[]){
+        for (let i = 0; i < choices.length; i++){
+            let tr = choices[i].tr;
+
+            if (tr.getCurMon().fainted && tr.getAliveTeamSize() !== 0){ 
+                tr.getCurMon().switchOut();
+                await this.demandSwitch(tr);
+            }
+            else if (tr.getAliveTeamSize() === 0){
+                tr.opponent && await this.endBattle(tr.opponent)    
+            }
+        }
+    }
+
+    async demandSwitch(tr: Trainer){
+        // demand switch: enable trainer circle, not moves
+        if (!tr.isComputer()){
+            await this.requestChoice(tr).then((val) => {
+                tr.switchCurMon(val.index);
+            });
+        }
+        else {
+            tr.switchCurMon(tr.randomSwitchChoice());
+        }
+
+        let message = (tr.name + ' sent out ' + tr.getCurMon().getName());
+        await this.LogEvent({text: message, dialog: true});
+    }
     
     async getChoices(){
         
         let choices: battleChoice[] = [];
 
-        const choice1 = await this.requestChoice(this.User)
+        await this.requestChoice(this.User)
             .then((val) => {choices.push(val)})
             .catch((val) => { this.endBattle(this.User); console.log(val)})
 
         choices.push(this.Opp.randomBattleChoice(this.Opp.getCurMonIndex()));
 
         // TODO: modernize to handle multiple: trainer and client inputs in loop (length of activeTrainers)
+
+        // do speed check, map each decision to priority bracket... 
+        choices = setChoiceOrder(choices);
         
         return choices;
     }
 
-    setChoiceOrder(arr: battleChoice[]): battleChoice[]{ // optimizable
-        let switches: battleChoice[] = [];
-        let pri: battleChoice[] = [];
-        let normals: battleChoice[] = [];
-
-        for (let i = 0; i < arr.length; i++){
-            if (!arr[i].move){
-                switches.push(arr[i]);
-            }
-            else{
-                let theMove = arr[i].tr.getCurMon().getMove(arr[i].index);
-                if (theMove.priority > 0){
-                    pri.push(arr[i]);
-                }
-                else{
-                    normals.push(arr[i]);
-                }
-            }
-        }
-
-        switches.sort((a, b) => parseFloat(b.tr.getCurMon().getStat().spe.toString()) - parseFloat(a.tr.getCurMon().getStat().spe.toString()));
-        normals.sort((a, b) => parseFloat(b.tr.getCurMon().getStat().spe.toString()) - parseFloat(a.tr.getCurMon().getStat().spe.toString()));
-
-        return switches.concat(pri, normals);
-    }
-
-    async enactTurn(choices: battleChoice[]) {
-        console.log('Enacting turn');
-
-        // do speed check, map each decision to priority bracket... 
-        choices = this.setChoiceOrder(choices);
-
+    async enactTurn(choices: battleChoice[]) 
+    {
         // enact trainer decisions sequentially by priority
         for (let i = 0; i < choices.length; i++) 
         { 
@@ -127,86 +138,59 @@ class Battle extends React.Component<BattleProps, BattleStates> {
             let tr = choices[i].tr;
             let mon = tr.getCurMon();
 
-            // set up string for either event
-            if (choices[i].move) {
-                var subject = tr.getCurMon().getName();
-                var action = " used "
-                var predicate = choices[i].tr.getCurMon().getMove(choices[i].index).name;
-            }
-            else {
-                subject = tr.name;
-                action = " sent out "
-                predicate = choices[i].tr.getTeamMember(choices[i].index).getName();
-            }
-            var battleMessage = subject + action + predicate;
-
             // enact choice
             if (choices[i].tr.getCurMon().checkAlive()) {
-                console.log(battleMessage);
+                let subtext: string[] = [];
+
                 if (!choices[i].move) {
+                    tr.getCurMon().switchOut();
                     choices[i].tr.switchCurMon(choices[i].index);
                 }
                 else {
-                    opponent && mon.useMove(choices[i].index, opponent.getCurMon());
+                    opponent && mon.useMove(choices[i].index, opponent.getCurMon(), subtext);
+                    
                     opponent?.getCurMon().checkAlive();
                 }
 
-                // create pop up dialog
+                await this.LogEvent(writeEvent(choices[i], subtext));
+
             }
             else{
-                if (tr.getAliveTeamSize() > 0) 
+                // Demand switch if tr has remaining mons
+                if (tr.getAliveTeamSize() !== 0) 
                 {
-                    // demand switch: enable trainer circle, not moves
-                    if (!tr.isComputer()){
-                        // enable control
-                        await this.requestChoice(tr).then((val) => {
-                            tr.switchCurMon(val.index);
-                        })
-                    }
-                    else {
-                        tr.switchCurMon(tr.randomSwitchChoice());
-                        console.log(tr.name + ' sent out ' + tr.getCurMon().getName())
-                    }
+                    tr.getCurMon().switchOut();
+                    await this.demandSwitch(tr);
                 }
                 else {
-                    opponent && this.endBattle(opponent);
+                    opponent && await this.endBattle(opponent);
                 }
             }
-            await wait(750);
+            await wait (100);
         }        
 
-        for (let i = 0; i < choices.length; i++){
-            let tr = choices[i].tr;
-            if (tr.getCurMon().fainted && tr.getAliveTeamSize() > 0){ // consolidate into one function with above
-                if (!tr.isComputer()){
-                    await this.requestChoice(tr).then((val) => {
-                        tr.switchCurMon(val.index);
-                    })
-                }
-                else {
-                    tr.switchCurMon(tr.randomSwitchChoice());
-                    console.log(tr.name + ' sent out ' + tr.getCurMon().getName())
-                }
-            }
-            else if (tr.getAliveTeamSize() === 0){
-                tr.opponent && this.endBattle(tr.opponent)    
-            }
-        }
+        // check for fainted mons post-moves
+        await this.fieldAliveChecks(choices);
+
         // check for updates to status and residuals
+        for (let i = 0; i < choices.length; i++){
+            choices[i].tr.getCurMon().residualConditions('clear');
+        }
+
+        await this.fieldAliveChecks(choices);
 
         // update turn
         this.setState({turnMayStart: true, turnCount: this.state.turnCount++});
     }
     
-    BattleController = ({time}: BCProps) => {
+    BattleController = () => {
         useEffect(() => {
             if (this.state.turnMayStart){
                 this.setState({turnMayStart: false});
 
-                let turn = this.getChoices()
+                this.getChoices()
                 .then((choices) => this.enactTurn(choices));  
             }
-
         });
 
         return (
@@ -216,13 +200,13 @@ class Battle extends React.Component<BattleProps, BattleStates> {
         )
     }
 
-    endBattle(tr: Trainer) {
-        console.log('test')
+    async endBattle(tr: Trainer) {
+        let message = tr.opponent && tr.opponent.name + 'won the battle!';
+        message && await this.LogEvent({text: message, dialog: true});
         this.props.endFunc(tr);
     }
 
     render(){
-        let curmon1 = this.User.getCurMon();
         let enabled = this.state.controlsEnabled;
 
         return( // update to display map instead of 4 of same thing
@@ -234,7 +218,7 @@ class Battle extends React.Component<BattleProps, BattleStates> {
                         <div className="inner-trainer-box"> <TrainerCircle tr={this.User} onLeft={true} handleClick={this.getChoiceClick} enabled={enabled && !this.User.isComputer()}/> </div>
                     </div>
 
-                    <Field curMon1={this.User.getCurMon()} curMon2={this.Opp.getCurMon()}/>
+                    <Field curMon1={this.User.getCurMon()} curMon2={this.Opp.getCurMon()} events={this.eventLog}/>
 
                     <div className="trainer-box">
                         <div className='inner-trainer-box'> <TrainerCircle tr={ this.Opp } onLeft={false} enabled={enabled && !this.Opp.isComputer()}/>
@@ -244,16 +228,9 @@ class Battle extends React.Component<BattleProps, BattleStates> {
                 </div>
 
                 <div className='lower'>
-                    <div className="move-bar">
-                        {<div className="move-set">
-                            {(enabled && curmon1.getMove(0)) ? <MoveButton move={curmon1.getMove(0)} handleClick={this.getChoiceClick} value={{tr: this.User, move: true, index: 0}}/> : <div className="empty-move-button"/>}
-                            {(enabled && curmon1.getMove(1)) ? <MoveButton move={curmon1.getMove(1)} handleClick={this.getChoiceClick} value={{tr: this.User, move: true, index: 1}}/> : <div className="empty-move-button"/>}
-                            {(enabled && curmon1.getMove(2)) ? <MoveButton move={curmon1.getMove(2)} handleClick={this.getChoiceClick} value={{tr: this.User, move: true, index: 2}}/> : <div className="empty-move-button"/>}
-                            {(enabled && curmon1.getMove(3)) ? <MoveButton move={curmon1.getMove(3)} handleClick={this.getChoiceClick} value={{tr: this.User, move: true, index: 3}}/> : <div className="empty-move-button"/>}
-                        </div>}
-                    </div>
-
-                    <this.BattleController time={this.state.battleTimer} />
+                    <this.BattleController />
+                    <MoveBar enabled={enabled} tr={this.User} handleClick={this.getChoiceClick}/>
+                    <EventLogBox events={this.eventLog}/>
                 </div> 
             </div>
         )

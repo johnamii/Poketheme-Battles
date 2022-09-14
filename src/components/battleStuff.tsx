@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import Trainer from '../sim/trainer'
 import Pokemon from '../sim/pokemon'
-import { moveData, battleChoice } from '../data/globalTypes'
+import { moveData, battleChoice, battleEvent } from '../data/globalTypes'
 import { TypeChart } from '../data/typeChart'
 import './styles/battleStuff.css'
+import { randInt } from '../sim/functions'
 
 interface TrainerCircProps { tr: Trainer; onLeft: boolean; handleClick?: any, enabled: boolean }
 interface SwitchButtonProps { mon: Pokemon; onLeft: boolean; active: boolean; value: battleChoice; fainted?: boolean }
@@ -69,7 +70,7 @@ export class TrainerCircle extends React.Component<TrainerCircProps> {
                     disabled={!this.props.enabled}
                     id="choice-button"
                     >
-                    <img src={mon && mon.getSprite('menu') } className={onLeft ? "switch-sprite-left" : "switch-sprite-right"}/>
+                    <img src={mon && mon.getSprite('menu') } className={onLeft ? "switch-sprite-left" : "switch-sprite-right"} alt='icon'/>
                 </button>
                 <i className="switch-button-text"> {mon && mon.getName()} </i>
             </div>
@@ -91,4 +92,51 @@ export const MoveButton = ({mon, move, handleClick, value}: MoveButtonProps) => 
                 <div >{ move.name }</div>
             </button>
         )
+}
+
+interface MoveBarProps { enabled: boolean, tr: Trainer, handleClick: any }
+export const MoveBar = ({enabled, tr, handleClick}: MoveBarProps) => {
+    let mon = tr.getCurMon();
+    return (
+        <div className="move-bar">
+            <div className="move-set">
+                {(enabled && mon.getMove(0)) ? <MoveButton move={mon.getMove(0)} handleClick={handleClick} value={{tr: tr, move: true, index: 0}}/> : <div className="empty-move-button"/>}
+                {(enabled && mon.getMove(1)) ? <MoveButton move={mon.getMove(1)} handleClick={handleClick} value={{tr: tr, move: true, index: 1}}/> : <div className="empty-move-button"/>}
+                {(enabled && mon.getMove(2)) ? <MoveButton move={mon.getMove(2)} handleClick={handleClick} value={{tr: tr, move: true, index: 2}}/> : <div className="empty-move-button"/>}
+                {(enabled && mon.getMove(3)) ? <MoveButton move={mon.getMove(3)} handleClick={handleClick} value={{tr: tr, move: true, index: 3}}/> : <div className="empty-move-button"/>}
+            </div>
+        </div>
+    )
+}
+
+interface BoxProps { events: battleEvent[]; }
+export const EventLogBox = ({events}: BoxProps) => {
+
+    const bottomRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        bottomRef.current && bottomRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        });
+    };
+
+    let textList = events.map(({text, subtext}) => {
+        return <ul key={randInt(0, 9999)} style={{fontSize:'small', textIndent:'-10%', backgroundColor:'black', borderRadius:'1mm'}}> 
+                    { text } 
+                    <br/>
+                    <small style={{color:'gray'}}>{ subtext?.map((sub) => { return <ul key={randInt(0, 9999)}> {sub} <br/></ul>}) } </small>
+                </ul>
+    }); 
+
+    useEffect(() => {
+        scrollToBottom();
+    })
+
+    return (
+        <div className='event-log-box'>
+            {textList}
+            <div ref={bottomRef}></div>
+        </div>
+    )
 }

@@ -13,7 +13,7 @@ export const Presets: {[presetid: string]: presetData} = {
     },
     venusaur_off: {
         set: "Offensive",
-        moves: [Moves.gigadrain, Moves.sludgebomb, Moves.leafstorm, Moves.struggle],
+        moves: [Moves.gigadrain, Moves.sludgebomb, Moves.leafstorm, Moves.toxic],
         ivs: {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31},
         evs: {hp: 8, atk: 0, def: 0, spa: 252, spd: 0, spe: 252},
         nature: Natures.modest,
@@ -39,7 +39,7 @@ export const Presets: {[presetid: string]: presetData} = {
     },
     meganium_sp_def: {
         set: 'Special Defensive',
-        moves: [Moves.gigadrain, Moves.toxic, Moves.synthesis, Moves.reflect],
+        moves: [Moves.gigadrain, Moves.toxic, Moves.synthesis],
         ivs: {hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31},
         evs: {hp: 252, atk: 0, def: 0, spa: 8, spd: 252, spe: 0},
         nature: Natures.calm,

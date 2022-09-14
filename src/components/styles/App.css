@@ -30,6 +30,7 @@
   height: 80%;
   top: 10%;
   display: flex;
+  flex-flow:row-reverse;
 
   align-items: center;
   justify-content: center;
@@ -41,9 +42,10 @@
   border-radius: 300px;
   border-width: 1/2vw;
   background-color: transparent;
-  height: 90%;
-  width: 34%;
+  height: 70vh;
+  width: 70vh;
   overflow: hidden;
+  position: absolute;
 }
 
 .ball-upper-half{
@@ -56,8 +58,8 @@
 
 .ball-center-line{
   background-color: #191b23;
-  width: 40%;
-  height: 8%;
+  width: 71vh;
+  height: 7%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,8 +70,8 @@
   border-radius: 100px;
   background-color: #191b23;
 
-  height: 375%;
-  width: 30%;
+  height: 22vh;
+  width: 22vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,7 +98,16 @@
   background-color: whitesmoke;
 }
 
+.theme-button{
+  background-color: white;
+  width: 10vh;
+  height: 10vh;
 
+  position: relative;
+  margin: auto;
+  
+  border-radius: 500%;
+}
 
 .App-footer{
   background-color: black;

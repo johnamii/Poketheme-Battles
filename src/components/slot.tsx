@@ -1,7 +1,20 @@
-import React, { useState } from 'react'
+//import { useState } from 'react'
 import Pokemon from '../sim/pokemon'
-import Trainer from '../sim/trainer'
 import './styles/field.css'
+import { TypeChart } from '../data/typeChart'
+
+interface StatTagProps { stat: string, modVal: number }
+const StatTag = ({stat, modVal}: StatTagProps) => {
+
+    return(
+        <div 
+        className='stat-mod-tag' 
+        style={modVal !== 0 ? modVal > 0 ? {backgroundColor:'#d9ead3'} : {backgroundColor:'#ea9999'} : {visibility:'hidden'}}
+        > 
+            <small>{stat }: {modVal}</small>
+        </div>
+    )
+}
 
 interface BarProps { occupant: Pokemon; }
 export const StatusBar = ({occupant}: BarProps) => {
@@ -17,13 +30,24 @@ export const StatusBar = ({occupant}: BarProps) => {
         healthColor = 'red';
     }
 
-    let statTags = []; // getStatMods()
-    let statusCondition = ''; // getStatusCondition()
+    const status = occupant.getStatusCond();
+    var statusColor = 'white';
+    switch (status){
+        case('brn'): statusColor = TypeChart.Fire.color1; break;
+        case('psn'):
+        case('tox'): statusColor = TypeChart.Poison.color1; break;
+        case('prz'): statusColor = TypeChart.Electric.color1; break;
+        case('frz'): statusColor = TypeChart.Ice.color1; break;
+    }
 
     // status tags / stat tags / condition tags
     return (
         <div className="status-bar">
-            <b>{occupant.getName()}  L{occupant.getLevel()}</b>
+            <b>{occupant.getName()}</b> <small>L{occupant.getLevel()}</small>
+
+            <div className='condition-tag' style={status ?  {visibility:'visible', backgroundColor: statusColor} : {visibility:'hidden'}}>
+                {status}
+            </div>
 
             <div className='inner-bar'>
                 <div style={{marginLeft: 5}}><b> {percent}% </b></div>
@@ -40,48 +64,42 @@ export const StatusBar = ({occupant}: BarProps) => {
                     </div>
                 </div>
             </div>
+            <div className='tags-bar'>
+                <StatTag stat="Atk" modVal={occupant.getStatMods().atk}/>
+                <StatTag stat="Def" modVal={occupant.getStatMods().def}/>
+                <StatTag stat="SpA" modVal={occupant.getStatMods().spa}/>
+                <StatTag stat="SpD" modVal={occupant.getStatMods().spd}/>
+                <StatTag stat="Spe" modVal={occupant.getStatMods().spe}/>
+            </div>
+
         </div>
     )
     
 }
 
+// call effect of losing health or something happenning in the battle sequence moments
+
 interface SlotProps { sprite: string; occupant: Pokemon; }
+const Slot = ({sprite, occupant}: SlotProps) => {
+    
+    // let [stealthRock, setStealthRock] = useState(false);
+    // let [spikes, setSpikes] = useState(0);
+    // let [leechSeed, setLeechSeed] = useState(false);
+    // let [auroraVeil, setAuroraVeil] = useState(0);
+    // let [lightScreen, setLightScreen] = useState(0);
+    // let [reflect, setReflect] = useState(0);
 
-interface SlotState {
-    stealthRock: number;
-    spikes: number;
-    leechseed: boolean;
-    auroraVeil: number;
-    lightScreen: number;
-    reflect: number;    
-}
-
-class Slot extends React.Component<SlotProps, SlotState> {
-    constructor(props: SlotProps){
-        super(props);
-    }
-    state: SlotState = {
-        stealthRock: 0,
-        spikes: 0,
-        leechseed: false,
-        auroraVeil: 0,
-        lightScreen: 0,
-        reflect: 0
-    }
-
-    render() {
         return (
-            <div className={this.props.sprite + '-container'}>
+        <div className={sprite + '-container'}>
 
-                <StatusBar occupant={this.props.occupant}/>
+            <StatusBar occupant={occupant}/>
 
-                { this.props.sprite === "front" 
-                ? <img className='front-sprite' src={ this.props.occupant.getSprite('front')} style={{width:200, height: 200}} alt="replace name"/>
-                : <img className='back-sprite' src={ this.props.occupant.getSprite('back') } style={{width:300, height: 300}} alt="replace name"/>
-                }
-            </div>
-        );
-    }
+            { sprite === "front" 
+            ? <img className='front-sprite' src={ occupant.getSprite('front')} style={{width:200, height: 200}} alt="replace name"/>
+            : <img className='back-sprite' src={ occupant.getSprite('back') } style={{width:300, height: 300}} alt="replace name"/>
+            }
+        </div>
+    );
 };
 
 export default Slot;

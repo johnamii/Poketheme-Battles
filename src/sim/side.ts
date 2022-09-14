@@ -1,10 +1,4 @@
-import Pokemon from './pokemon'
-//import { speciesData } from '../data/globalTypes'
-import { Pokedex } from '../data/pokedex'
-import { Moves } from '../data/moves';
 import Trainer from './trainer'
-import { Trainers } from '../data/trainers'
-import { trainerData } from '../data/globalTypes'
 
 class Side {
     trainers: Trainer[];

@@ -1,6 +1,13 @@
 import Pokemon from '../sim/pokemon'
 import Trainer from '../sim/trainer';
 
+export type battleEvent = {
+    text: string;
+    dialog: boolean;
+    damage?: number;
+    subtext?: string[];
+}
+
 export type statsTable = {
     hp:  number;
     atk: number;
@@ -48,7 +55,7 @@ export type moveData = {
     category: string;
     pp: number;
     target: string;
-    self?: string | {boosts: {atk?: number, def?: number, spa?: number, spd?: number, spe?: number, acc?: number, eva?: number}};
+    self?: string | {boosts?: {atk?: number, def?: number, spa?: number, spd?: number, spe?: number, acc?: number, eva?: number}};
     boosts?: {atk?: number, def?: number, spa?: number, spd?: number, spe?: number, acc?: number, eva?: number};
     status?: string;
     onHit?(mon: Pokemon): boolean;

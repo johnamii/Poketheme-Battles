@@ -136,3 +136,20 @@
     border-width: 1px;
     margin: 1%;
 }
+
+.event-log-box{
+    height: 20%;
+    width: 19%;
+    border: 1px solid lightskyblue;
+    border-radius: 1mm;
+    background-color: transparent;
+    right: 1%;
+    bottom: 1%;
+    position: fixed;
+    overflow: auto;
+    
+
+    scrollbar-color: black black;
+    scrollbar-width: thin;
+    scroll-behavior: auto;
+}

@@ -1,52 +1,64 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import './styles/App.css'
 import { Link } from 'react-router-dom';
+import { themeData } from '../data/globalTypes'
+import { Themes } from '../data/themes';
 
-const OpenGameButton = () => { 
+// consider making battle type a static option ALONG WITH theme: single, double, FFA
+
+interface OGBProps { theme: themeData, onClick: any }
+const OpenGameButton = ({theme, onClick}: OGBProps) => { 
+
+  function handleClick(theme: themeData){
+    console.log('test1')
+    onClick(theme);
+  }
+
     return (
         <Link to="/battle">
-            <button className='Open-Game-Button' onClick={() => { }}>
+            <button className='Open-Game-Button' onClick={() => { handleClick(theme) }}>
                 Start
             </button>
         </Link>
     )
   };   
   
-  const ThemeButton = () => {
-    return (
-      <button>
+  interface TBProps { theme: themeData; loaded: number; onClick: any; id: number}
+  const ThemeButton = ({theme, onClick, id, loaded}: TBProps) => {
 
+    function handleClick(theme: themeData, id: number){
+      onClick(theme, id);
+    }
+
+    return (
+      <button className='theme-button' onClick={() => handleClick(theme, id)} style={id === loaded ? {opacity:'100%'} : {opacity:'30%'}}>
+        {theme.name}
       </button>
     )
   }
 
-// home screen: cool pokeball design where center is the play battle button
-// floating seleciton circles around pokeball to choose the specific theme battle, alters play button
-  // show link from theme bubble to ball, flowing data inward
-  // perhaps bubbles could be orbiting around on circles around ball
-    // static while selecting, once play is hit, do animation to spin them all around ball and start
+interface HSProps { onClick: any}
+const HomeScreen = ({onClick}: HSProps) => {
 
-// TODO: upload to repository, switch this list to project manager on github
+  const [theme, setTheme] = useState(Themes.Blank);
+  const [active, setActive] = useState(0);
 
-// TODO: get logo to put on homescreen
-
-// LATE TODO: ADD ANIMATIONS:
-  // SWITCH: CURRENT MOVES BACKWARDS, NEW BALL GETS THROWN OUT AND NEW MON GROWS UPWARDS
-  // ATTACK: PHYSICAL: MON MOVES FURTHER FORWARD IN CIRCULAR MOTION... SPECIAL: MON DRAGS BACK THEN PUSHES FORWARD
-      // EFFECT THE COLOR OF MOVE APPEARS ON SUBJECT OF MOVE
-
-// consider making battle type a static option ALONG WITH theme: single, double, FFA
-interface HomeProps{}
-class HomeScreen extends React.Component<HomeProps> {
-  constructor(props: HomeProps){
-      super(props);
+  function handleThemeClick(th: themeData, id: number){
+    setTheme(th);
+    setActive(id);
   }
 
-  render() {
+  function handleStartClick(theme: themeData){
+    console.log('test2')
+    onClick(theme);
+  }
+  
     return (
       <div className="home-screen">
 
-        <header className="App-header"> <b>Poke Theme Battles</b> </header>
+        <header className="App-header"> 
+          <b>Poke Theme Battles</b> 
+        </header>
         
         <div className='home-center'>
           
@@ -57,19 +69,22 @@ class HomeScreen extends React.Component<HomeProps> {
 
           <div className='ball-center-line'>
             <div className='ball-center-circle'>
-              <OpenGameButton/>
+              {theme && <OpenGameButton theme={theme} onClick={handleStartClick}/>}
             </div>
           </div>
+          
+
+        <ThemeButton theme={Themes.StarterBrawl} loaded={active} onClick={handleThemeClick} id={1}/>
+        <ThemeButton theme={Themes.MonkeMashup} loaded={active} onClick={handleThemeClick} id={2}/>
 
         </div>
 
         <footer className="App-footer">
-            test
+            
         </footer>
 
       </div>
     )
-  }
 
 }
 

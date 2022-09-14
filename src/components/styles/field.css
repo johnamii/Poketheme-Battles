@@ -79,9 +79,7 @@
 }
 
 .health-bar{
-    border-color:white;
-    border-style:solid;
-    border-width: 1px;
+    border: 1px solid white;
     background-color: grey;
 
     width:150px;
@@ -91,4 +89,50 @@
     display:flex;
     align-items: center;
     justify-content: flex-start;
+}
+
+.tags-bar{
+    border: 1 solid white;
+    height: 50%;
+    height: 90%;
+    position: absolute;
+    margin: auto;
+    display: flex;
+    top: 40px;
+}
+
+.condition-tag{
+    height: 3%;
+    width: 15%;
+    position: absolute;
+    border: 1px solid white;
+    margin: auto;
+    margin-right: 95%;
+    border-radius: 1mm;
+    color: black;
+    
+
+}
+
+.stat-mod-tag{
+    height: 3%;
+    width: 21%;
+    border: 1px solid black;
+    border-radius: 1mm;
+    text-align: center;
+    font-size: smaller;
+}
+
+.event-popup {
+    width: 50%;
+    height: 5%;
+    color: white;
+    text-align: center;
+    border: 1 solid lightskyblue;
+    border-radius: 1mm;
+    background-color: black;
+    opacity: 75%;
+    position: fixed;
+    margin-top: 5%;
+    margin: auto;
 }

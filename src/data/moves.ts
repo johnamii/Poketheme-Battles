@@ -126,7 +126,7 @@ export const Moves: {[moveid: string]: moveData} = {
         category: "status",
         pp: 20,
         target: "self",
-        self: { boosts: { atk: 1, spe: 1 }},
+        boosts: { atk: 1, spe: 1 },
         secondary: null,
         priority: 0,
     },
