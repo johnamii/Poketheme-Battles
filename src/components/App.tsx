@@ -31,7 +31,7 @@ const App = () => {
     <div style={{backgroundColor:'#191b23'}}>
       <BrowserRouter>
         <Routes>
-          <Route path="/poketheme-battles" element={ <HomeScreen onClick={handleStartClick}/> } />
+          <Route path="/" element={ <HomeScreen onClick={handleStartClick}/> } />
           <Route 
             path="/battle" 
             element={ <BattleScreen theme={curTheme} sides={initSides(curTheme)} /> } 
