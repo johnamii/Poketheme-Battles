@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/poketheme-battles/static/css/main.1cbd6c8f.css",
+    "main.js": "/poketheme-battles/static/js/main.9730880e.js",
+    "static/js/787.43c56d63.chunk.js": "/poketheme-battles/static/js/787.43c56d63.chunk.js",
+    "index.html": "/poketheme-battles/index.html",
+    "main.1cbd6c8f.css.map": "/poketheme-battles/static/css/main.1cbd6c8f.css.map",
+    "main.9730880e.js.map": "/poketheme-battles/static/js/main.9730880e.js.map",
+    "787.43c56d63.chunk.js.map": "/poketheme-battles/static/js/787.43c56d63.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1cbd6c8f.css",
+    "static/js/main.9730880e.js"
+  ]
+}
