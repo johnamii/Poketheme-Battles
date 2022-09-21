@@ -10,7 +10,6 @@ interface OGBProps { theme: themeData, onClick: any }
 const OpenGameButton = ({theme, onClick}: OGBProps) => { 
 
   function handleClick(theme: themeData){
-    console.log('test1')
     onClick(theme);
   }
 
@@ -49,7 +48,6 @@ const HomeScreen = ({onClick}: HSProps) => {
   }
 
   function handleStartClick(theme: themeData){
-    console.log('test2')
     onClick(theme);
   }
   

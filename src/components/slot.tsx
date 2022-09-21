@@ -95,8 +95,8 @@ const Slot = ({sprite, occupant}: SlotProps) => {
             <StatusBar occupant={occupant}/>
 
             { sprite === "front" 
-            ? <img className='front-sprite' src={ occupant.getSprite('front')} style={{width:200, height: 200}} alt="replace name"/>
-            : <img className='back-sprite' src={ occupant.getSprite('back') } style={{width:300, height: 300}} alt="replace name"/>
+            ? <img className='front-sprite' src={ occupant.getSprite('front')} style={{width:'14vw', height: '14vw'}} alt="replace name"/>
+            : <img className='back-sprite' src={ occupant.getSprite('back') } style={{width:'19vw', height: '19vw'}} alt="replace name"/>
             }
         </div>
     );

@@ -1,5 +1,6 @@
 {
   "name": "pokethemebattles",
+  "homepage":"http://johnamii.github.io/poketheme-battles",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

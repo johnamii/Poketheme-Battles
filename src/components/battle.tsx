@@ -16,6 +16,7 @@ interface BattleStates{
     battleTimer: number;
     battleChoice?: battleChoice;
     turnMayStart: boolean;
+    timerEnabled: boolean;
 }
 
 class Battle extends React.Component<BattleProps, BattleStates> {
@@ -34,6 +35,7 @@ class Battle extends React.Component<BattleProps, BattleStates> {
         turnCount: 0,
         battleTimer: 30,
         turnMayStart: true,
+        timerEnabled: false
     }
 
     eventLog: battleEvent[] = [];
@@ -54,7 +56,7 @@ class Battle extends React.Component<BattleProps, BattleStates> {
     getChoiceClick = (choice: battleChoice) => { this.setState({battleChoice: choice}); }
 
     timerCountDown() { 
-        if (this.state.battleTimer > 0)
+        if (this.state.battleTimer > 0 && this.state.timerEnabled)
             this.setState({battleTimer: this.state.battleTimer - 1}); 
     }
 

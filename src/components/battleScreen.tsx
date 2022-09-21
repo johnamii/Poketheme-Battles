@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './styles/battleScreen.css'
-import { themeData, monData } from '../data/globalTypes'
+import { themeData } from '../data/globalTypes'
 import Trainer from '../sim/trainer'
 import Side from '../sim/side'
 import Battle from './battle'
@@ -15,14 +15,14 @@ const StartSelectionBox = ({tr, handleClick}: BoxProps) => {
 
     return (
         <div className="start-team-box">
-            <div style={{paddingTop: 75}}> <img src={tr.sprite}/> </div>
+            <div style={{paddingTop: 75}}> <img src={tr.sprite} alt='tr'/> </div>
             <div style={{height: 200, width: 200}}>
-                {tr.team[0] && <img src={tr.team[0].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(0)}/>}
-                {tr.team[1] && <img src={tr.team[1].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(1)}/>}
-                {tr.team[2] && <img src={tr.team[2].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(2)}/>}
-                {tr.team[3] && <img src={tr.team[3].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(3)}/>}
-                {tr.team[4] && <img src={tr.team[4].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(4)}/>}
-                {tr.team[5] && <img src={tr.team[5].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(5)}/>}
+                {tr.team[0] && <img src={tr.team[0].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(0)} alt='mon'/>}
+                {tr.team[1] && <img src={tr.team[1].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(1)} alt='mon'/>}
+                {tr.team[2] && <img src={tr.team[2].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(2)} alt='mon'/>}
+                {tr.team[3] && <img src={tr.team[3].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(3)} alt='mon'/>}
+                {tr.team[4] && <img src={tr.team[4].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(4)} alt='mon'/>}
+                {tr.team[5] && <img src={tr.team[5].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(5)} alt='mon'/>}
             </div>
             
         </div>
