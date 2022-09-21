@@ -10,7 +10,7 @@ import Trainer from '../sim/trainer';
 import ComputerTrainer from '../sim/computerTrainer'
 import { themeData } from '../data/globalTypes';
 
-const App = () => { 
+const App = () => {
 
   const [curTheme, setCurTheme] = useState(Themes.Blank);
 
