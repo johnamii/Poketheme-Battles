@@ -3,6 +3,7 @@ import './styles/App.css'
 import { Link } from 'react-router-dom';
 import { themeData } from '../data/globalTypes'
 import { Themes } from '../data/themes';
+import { isMobile } from 'react-device-detect'
 
 // consider making battle type a static option ALONG WITH theme: single, double, FFA
 
@@ -15,7 +16,7 @@ const OpenGameButton = ({theme, onClick}: OGBProps) => {
 
     return (
         <Link to="/battle">
-            <button className='Open-Game-Button' onClick={() => { handleClick(theme) }}>
+            <button className='Open-Game-Button' onClick={() => { handleClick(theme) }} style={ isMobile ? {width: '15vw', height: '15vw'} : {width: '12vh', height: '12vh'} }>
                 Start
             </button>
         </Link>
@@ -60,20 +61,18 @@ const HomeScreen = ({onClick}: HSProps) => {
         
         <div className='home-center'>
           
-          <div className="pokeball">
-            <div className='ball-upper-half'></div>
-            <div className='ball-lower-half'></div>
-          </div>
-
-          <div className='ball-center-line'>
-            <div className='ball-center-circle'>
-              {theme && <OpenGameButton theme={theme} onClick={handleStartClick}/>}
+            <div className="pokeball" style={ isMobile ? {width: '80vw', height: '80vw'} : {width: '70vh', height: '70vh'} }>
+              <div className='ball-upper-half'></div>
+              <div className='ball-lower-half'></div>
             </div>
-          </div>
-          
 
-        <ThemeButton theme={Themes.StarterBrawl} loaded={active} onClick={handleThemeClick} id={1}/>
-        <ThemeButton theme={Themes.MonkeMashup} loaded={active} onClick={handleThemeClick} id={2}/>
+            <div className='ball-center-line' style={ isMobile ? {width: '82vw', height: '7vw'} : {width: '72vh', height: '7%'} }>
+              <div className='ball-center-circle' style={ isMobile ? {width: '25vw', height: '25vw'} : {width: '22vh', height: '22vh'} }>
+                {theme && <OpenGameButton theme={theme} onClick={handleStartClick}/>}
+              </div>
+            </div>
+            <ThemeButton theme={Themes.StarterBrawl} loaded={active} onClick={handleThemeClick} id={1}/> 
+          <ThemeButton theme={Themes.MonkeMashup} loaded={active} onClick={handleThemeClick} id={2}/>
 
         </div>
 

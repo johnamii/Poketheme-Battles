@@ -38,7 +38,6 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    
 }
 
 .start-box-icon{
@@ -47,11 +46,10 @@
 }
 
 .trainer-box{
-    display: flexbox;
+    display: flex;
+    margin: 1%;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1 none;
+    
 }
 
 .inner-trainer-box{
@@ -60,8 +58,8 @@
 }
 
 .battle-div{
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
 }
 
 .upper{
@@ -69,7 +67,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    margin: 10px;
+    margin: 1%;
 }
 
 .lower{
@@ -78,20 +76,42 @@
     
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
+.mobile-upper{
+    display: flex;
+    flex-direction: column;
+    margin: 1%;
+    align-items: center;
+    justify-content: center;
+    height: 57vh;
+    width: 100%;
+}
+
+.mobile-lower{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1%;
+    height: 30%;
+    width: 98%;
+    
+}
 
 .battle-timer{
     border: 1px solid lightskyblue;
     background-color: black;
     color:indianred;
     border-radius: 2mm;
-    max-height: 20%;
-    width: 8%;
-    position: fixed;
-    left: 10%;
+    height: 5%;
+    width: 10vh;
+    font-size: 70%;
 
+    bottom: 0.5%;
+    left: 1%;
+    position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,6 +1,6 @@
 {
   "name": "pokethemebattles",
-  "homepage":"http://johnamii.github.io/poketheme-battles",
+  "homepage": "http://johnamii.com",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,12 +10,15 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.49",
     "react": "^18.2.0",
+    "react-device-detect": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -42,8 +42,7 @@
   border-radius: 300px;
   border-width: 1/2vw;
   background-color: transparent;
-  height: 70vh;
-  width: 70vh;
+  
   overflow: hidden;
   position: absolute;
 }
@@ -58,8 +57,6 @@
 
 .ball-center-line{
   background-color: #191b23;
-  width: 71vh;
-  height: 7%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,8 +67,6 @@
   border-radius: 100px;
   background-color: #191b23;
 
-  height: 22vh;
-  width: 22vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -84,8 +79,6 @@
   border: 1mm double lightskyblue;
   border-radius: 100%;
 
-  width: 12vh;
-  height: 12vh;
   position: relative;
 
   font-size: large;

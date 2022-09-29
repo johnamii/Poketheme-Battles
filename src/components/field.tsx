@@ -4,6 +4,7 @@ import Trainer from '../sim/trainer'
 import Slot from './slot'
 import Pokemon from '../sim/pokemon'
 import { battleEvent } from '../data/globalTypes'
+import {isMobile} from 'react-device-detect'
 
 interface FieldProps {
     s0Trs?: Trainer[];
@@ -11,6 +12,7 @@ interface FieldProps {
     curMon1: Pokemon;
     curMon2: Pokemon; // CHANGE TO JUST TRAINER and their CURMON
     events: battleEvent[];
+    dims: string[];
 }
 interface FieldState { weather: string; terrain: string; eventLength: number }
 
@@ -41,10 +43,10 @@ class Field extends React.Component<FieldProps, FieldState> {
     
     render() {
         return (
-            <fieldset className="field-window">
+            <fieldset className="field-window" style={{width:this.props.dims[0], height:this.props.dims[1]}}>
                 <img className="field-background" src="/assets/field/techno-battle-background.png" alt='backgroundImage'/>
 
-                {this.popup && <div className='event-popup'> {this.props.events[this.props.events.length-1].text} </div>}
+                {this.popup && <div className='event-popup' style={isMobile?{width: '70%'}: {}}> {this.props.events[this.props.events.length-1].text} </div>}
 
                 <Slot sprite="front" occupant={ this.props.curMon2 }/>
                 <Slot sprite="back" occupant={ this.props.curMon1 }/>

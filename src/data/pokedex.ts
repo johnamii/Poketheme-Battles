@@ -149,6 +149,18 @@ export const Pokedex: {[speciesID: string]: speciesData} = {
             back: "assets/spriteBacks/Spr_b_5b_395.png"
         }
     },
+    ambipom: {
+        num:424,
+        name: "Ambipom",
+        types: ['Normal'],
+        baseStats: { hp: 75, atk: 100, def: 66, spa: 60, spd: 66, spe: 115 },
+        presets: [Presets.blank],
+        imgs: {
+            menu: "assets/spriteMenus/ambipom.png",
+            front: "assets/spriteFronts/Spr_5b_424.png",
+            back: "assets/spriteBacks/Spr_b_5b_424.png"
+        }
+    },
     serperior: {
         num: 497,
         name: "Serperior",

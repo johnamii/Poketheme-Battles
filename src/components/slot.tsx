@@ -2,6 +2,7 @@
 import Pokemon from '../sim/pokemon'
 import './styles/field.css'
 import { TypeChart } from '../data/typeChart'
+import {isMobile} from 'react-device-detect'
 
 interface StatTagProps { stat: string, modVal: number }
 const StatTag = ({stat, modVal}: StatTagProps) => {
@@ -20,6 +21,7 @@ interface BarProps { occupant: Pokemon; }
 export const StatusBar = ({occupant}: BarProps) => {
 
     let percent = Math.floor(occupant.getCurHealth() / occupant.getStat().hp * 100);
+
     if (percent >= 51){
         var healthColor = '#64c735';
     }
@@ -42,28 +44,20 @@ export const StatusBar = ({occupant}: BarProps) => {
 
     // status tags / stat tags / condition tags
     return (
-        <div className="status-bar">
-            <b>{occupant.getName()}</b> <small>L{occupant.getLevel()}</small>
+        <div className="status-bar" style={isMobile ? {width: '35vw', height: '4vw'} : {}}>
+            <div style={isMobile ? {width:'70%', position:'relative', left: '15%', bottom:'25%', height: '100%'} : {width:'50%'}}><b>{occupant.getName()}</b> <small>L{occupant.getLevel()}</small></div>
 
             <div className='condition-tag' style={status ?  {visibility:'visible', backgroundColor: statusColor} : {visibility:'hidden'}}>
                 {status}
             </div>
 
-            <div className='inner-bar'>
-                <div style={{marginLeft: 5}}><b> {percent}% </b></div>
+            <div className='inner-bar' style={isMobile ? {marginLeft:'8%'} : {marginTop:'0%', marginLeft:'8%'}}>
+                <div><b style={isMobile ? {fontSize:'60%', paddingLeft: '5%'} : {fontSize:'80%', paddingLeft:'5%'}}> {percent}% </b></div>
                 <div className='health-bar'>
-                    <div className='percent-bar'
-                        style={{
-                        backgroundColor: healthColor,
-                        width: percent / 100 * 150,
-                        height: 9,
-                        borderRadius: 'inherit',
-                        display:'block'
-                        }}>
-                            
-                    </div>
+                    <div className='percent-bar'style={isMobile ? {backgroundColor: healthColor, width:percent * 0.70} : { backgroundColor: healthColor, width: percent * 1.16}}></div>
                 </div>
             </div>
+
             <div className='tags-bar'>
                 <StatTag stat="Atk" modVal={occupant.getStatMods().atk}/>
                 <StatTag stat="Def" modVal={occupant.getStatMods().def}/>
@@ -90,13 +84,13 @@ const Slot = ({sprite, occupant}: SlotProps) => {
     // let [reflect, setReflect] = useState(0);
 
         return (
-        <div className={sprite + '-container'}>
+        <div className={sprite + '-container'} style={isMobile ? sprite === 'front' ? {top:'10%', left:'50%'} : {bottom:'-47%', left:'-45%'} : {}}>
 
             <StatusBar occupant={occupant}/>
 
             { sprite === "front" 
-            ? <img className='front-sprite' src={ occupant.getSprite('front')} style={{width:'14vw', height: '14vw'}} alt="replace name"/>
-            : <img className='back-sprite' src={ occupant.getSprite('back') } style={{width:'19vw', height: '19vw'}} alt="replace name"/>
+            ? <img className='front-sprite' src={ occupant.getSprite('front')} style={isMobile ? {width: '15vh', height: '15vh'} :{width:'14vw', height: '14vw'}} alt="replace name"/>
+            : <img className='back-sprite' src={ occupant.getSprite('back') } style={isMobile ? {width: '20vh', height: '20vh'} :{width:'19vw', height: '19vw'}} alt="replace name"/>
             }
         </div>
     );

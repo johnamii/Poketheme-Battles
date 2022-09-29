@@ -1,20 +1,15 @@
 .field-window{
     background-color: black;
     color:black;
-    border-color:lightskyblue;
+    border: 1px solid lightskyblue;
     border-radius: 2mm;
-    border-width: 1px;
-    border-style:groove;
-
-    width: 55vw;
-    height: 72vh;
     
-    margin: auto;
     align-self: center;
     position: relative;
     
     display: flex;
     justify-content: center;
+    overflow:hidden;
 }
 
 .field-background{
@@ -51,35 +46,33 @@
 .status-bar{
     background-color: aliceblue;
     border-radius: 1mm;
-    border-color: grey;
-    border-width: 1px;
-    border-style: groove;
+    border: 1px groove grey;
+    flex:initial;
 
     font-size:small;
-    
 
     width: 14vw;
     height: 4%;
     
     margin-bottom: 1%;
 
-    display: flex;
-    justify-content: space-between;
+    display: flexbox;
+    justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .inner-bar{
     color: white;
     background-color: black;
-    height: 95%;
-    width: 70%;
-    position: relative;
-    top: 85%;
-    right: 15%;
+    height: 90%;
+    width: 80%;
+    
     border-radius:1mm;
     
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 .health-bar{
@@ -87,13 +80,20 @@
     border-radius: 1mm;
     background-color: grey;
 
-    width: 75%;
+    width: 70%;
     height: 40%;
     
     margin: auto;
     display:flex;
     align-items: center;
     justify-content: flex-start;
+    overflow:hidden;
+}
+
+.percent-bar{
+    height: 300%;
+    position: relative;
+    
 }
 
 .tags-bar{

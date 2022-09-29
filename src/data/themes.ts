@@ -65,13 +65,13 @@ export const Themes: {[theme: string]: themeData} = {
         }
     },
     MonkeMashup: {
-        name: "Monke Mashup",
+        name: "Monke Moshpit",
         description: '',
         setSize: 1,
         teamSize: 2,
-        pokeSet: [Pokedex.infernape],
+        pokeSet: [Pokedex.infernape, Pokedex.ambipom],
         generateTeam(){
-            return [new Pokemon({dex:Pokedex.infernape, set: Pokedex.infernape.presets[0]})];
+            return [new Pokemon({dex:Pokedex.infernape, set: Pokedex.infernape.presets[0]}), new Pokemon({dex:Pokedex.ambipom, set: Pokedex.ambipom.presets[0]})];
         }
     }
 
@@ -80,5 +80,4 @@ export const Themes: {[theme: string]: themeData} = {
     // mythical mayhem
     // 6 weak mons vs 1 strong mon
     // trainers swap team back and forth every battle
-    // monke moshpit
 }

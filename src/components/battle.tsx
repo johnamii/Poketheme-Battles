@@ -7,8 +7,9 @@ import Side from '../sim/side'
 import { battleChoice, battleEvent} from '../data/globalTypes'
 import { wait } from '@testing-library/user-event/dist/utils'
 import { setChoiceOrder, writeEvent } from '../sim/functions'
+import { isMobile, BrowserView, MobileView } from 'react-device-detect'
 
-interface BattleProps{ sides: Side[]; activeTrainers: number; endFunc: any}
+interface BattleProps{ sides: Side[]; activeTrainers: number; endFunc: any; }
 interface BattleStates{
     side1CanContinue: boolean;
     controlsEnabled: boolean;
@@ -37,7 +38,7 @@ class Battle extends React.Component<BattleProps, BattleStates> {
         turnMayStart: true,
         timerEnabled: false
     }
-
+    
     eventLog: battleEvent[] = [];
 
     User = this.props.sides[0].trainers[0];
@@ -53,7 +54,7 @@ class Battle extends React.Component<BattleProps, BattleStates> {
 
     flipControls(){ this.setState({controlsEnabled: !this.state.controlsEnabled}) }
 
-    getChoiceClick = (choice: battleChoice) => { this.setState({battleChoice: choice}); }
+    getChoiceClick = (choice: battleChoice) => { this.setState({battleChoice: choice});}
 
     timerCountDown() { 
         if (this.state.battleTimer > 0 && this.state.timerEnabled)
@@ -212,29 +213,61 @@ class Battle extends React.Component<BattleProps, BattleStates> {
         let enabled = this.state.controlsEnabled;
 
         return( // update to display map instead of 4 of same thing
+        
             <div className='battle-div'>
-
+                <BrowserView>
                 <div className="upper">
                     <div className="trainer-box"> 
                         <div className='inner-trainer-box'> { this.TMate && <TrainerCircle tr={this.TMate} onLeft={true} enabled={enabled && !this.TMate.isComputer()}/>} </div>
                         <div className="inner-trainer-box"> <TrainerCircle tr={this.User} onLeft={true} handleClick={this.getChoiceClick} enabled={enabled && !this.User.isComputer()}/> </div>
                     </div>
 
-                    <Field curMon1={this.User.getCurMon()} curMon2={this.Opp.getCurMon()} events={this.eventLog}/>
+                    <Field curMon1={this.User.getCurMon()} curMon2={this.Opp.getCurMon()} events={this.eventLog} dims={['55vw', '72vh']}/>
 
                     <div className="trainer-box">
-                        <div className='inner-trainer-box'> <TrainerCircle tr={ this.Opp } onLeft={false} enabled={enabled && !this.Opp.isComputer()}/>
-                        <div className='inner-trainer-box'> </div>{ this.Opp2  && <TrainerCircle tr={this.Opp2} onLeft={false} enabled={enabled && !this.Opp2.isComputer()}/> } </div>
+                        <div className='inner-trainer-box'> <TrainerCircle tr={ this.Opp } onLeft={false} enabled={enabled && !this.Opp.isComputer()}/> </div>
+                        <div className='inner-trainer-box'> { this.Opp2  && <TrainerCircle tr={this.Opp2} onLeft={false} enabled={enabled && !this.Opp2.isComputer()}/> } </div>
                     </div> 
 
                 </div>
 
                 <div className='lower'>
-                    <this.BattleController />
                     <MoveBar enabled={enabled} tr={this.User} handleClick={this.getChoiceClick}/>
+                    <this.BattleController />
                     <EventLogBox events={this.eventLog}/>
                 </div> 
+
+                </BrowserView>
+
+                <MobileView>
+                    <div className="mobile-upper">
+
+                        <div className="trainer-box" style={ {width: '97%'}}>
+                            <div > { this.TMate && <TrainerCircle tr={this.TMate} onLeft={true} enabled={enabled && !this.TMate.isComputer()}/>} </div>
+                            <div className='inner-trainer-box'> <TrainerCircle tr={ this.Opp } onLeft={false} enabled={enabled && !this.Opp.isComputer()}/> </div>
+                            <div className='inner-trainer-box'> { this.Opp2  && <TrainerCircle tr={this.Opp2} onLeft={false} enabled={enabled && !this.Opp2.isComputer()}/> } </div>
+                        </div>
+
+                        <Field curMon1={this.User.getCurMon()} curMon2={this.Opp.getCurMon()} events={this.eventLog} dims={['90vw', '40vh']}/>
+                    </div>
+
+                    <div className='mobile-lower'>
+                        
+                            <MoveBar enabled={enabled} tr={this.User} handleClick={this.getChoiceClick}/>
+
+                            <div className="trainer-box" style={ {width: '75%'} }> 
+                                
+                                <div > <TrainerCircle tr={this.User} onLeft={true} handleClick={this.getChoiceClick} enabled={enabled && !this.User.isComputer()}/> </div>
+                            </div>
+                            
+                        <this.BattleController />
+                        <EventLogBox events={this.eventLog}/>
+                    </div>
+                    
+                </MobileView>
             </div>
+            
+            
         )
     }
 }

@@ -4,6 +4,7 @@ import { themeData } from '../data/globalTypes'
 import Trainer from '../sim/trainer'
 import Side from '../sim/side'
 import Battle from './battle'
+import { isMobile } from 'react-device-detect'
 
 type BoxProps = { tr: Trainer; handleClick?: any };
 
@@ -44,6 +45,7 @@ class BattleScreen extends React.Component<Props, State> {
 
         this.handleStartChoice = this.handleStartChoice.bind(this);
         this.endBattle = this.endBattle.bind(this);
+
     }
 
     state: State = {
@@ -73,7 +75,7 @@ class BattleScreen extends React.Component<Props, State> {
 
                 {!this.state.battleOver
                     ? this.state.battleStarted
-                        ? <Battle sides={this.props.sides} activeTrainers={2} endFunc={this.endBattle}/>
+                        ? <Battle sides={this.props.sides} activeTrainers={2} endFunc={this.endBattle} />
                         : <div className='start-box'>
                             {s2Trs[1] ? <StartSelectionBox tr={s2Trs[1]}/> : <div style={{width: 300, height: 50}}/>}
                             <StartSelectionBox tr={s2Trs[0]}/>
