@@ -97,6 +97,7 @@ export type natureData = {
 
 export type themeData = {
     name: string;
+    id: string;
     description: string;
     setSize: number;
     pokeSet: speciesData[];

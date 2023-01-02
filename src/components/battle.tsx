@@ -248,7 +248,7 @@ class Battle extends React.Component<BattleProps, BattleStates> {
                             <div className='inner-trainer-box'> { this.Opp2  && <TrainerCircle tr={this.Opp2} onLeft={false} enabled={enabled && !this.Opp2.isComputer()}/> } </div>
                         </div>
 
-                        <Field curMon1={this.User.getCurMon()} curMon2={this.Opp.getCurMon()} events={this.eventLog} dims={['90vw', '40vh']}/>
+                        <Field curMon1={this.User.getCurMon()} curMon2={this.Opp.getCurMon()} events={this.eventLog} dims={['90vw', '35vh']}/>
                     </div>
 
                     <div className='mobile-lower'>

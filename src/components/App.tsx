@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './styles/App.css';
 import BattleScreen from './battleScreen'
@@ -11,36 +11,40 @@ import ComputerTrainer from '../sim/computerTrainer'
 import { themeData } from '../data/globalTypes';
 
 const App = () => {
+  
+  const [curThemeId, setCurThemeId] = useState('');
 
-  const [curTheme, setCurTheme] = useState(Themes.Blank);
-
-  function handleStartClick(theme: themeData){
-    setCurTheme(theme);
+  function themeClick(theme: themeData){
+    setCurThemeId(theme.id);
   }
 
   // update to take multiple client users instead of computer
   function initSides(theme: themeData): Side[]{
+    console.log('curtheme is: ' + curThemeId)
     return [
-      new Side( [new Trainer({data: Trainers.User, team: theme.generateTeam()} )]),
-      new Side([new ComputerTrainer( { data: Trainers.Other, team: theme.generateTeam() } )])
+      new Side( [ new Trainer({data: Trainers.User, team: theme.generateTeam()} )]),
+      new Side( [ new ComputerTrainer( { data: Trainers.Other, team: theme.generateTeam()} )])
     ];
   }
 
   // MAIN COMPONENT TREE
   return (
-    <div style={{backgroundColor:'#191b23'}}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={ <HomeScreen onClick={handleStartClick}/> } />
-          <Route 
-            path="/battle" 
-            element={ <BattleScreen theme={curTheme} sides={initSides(curTheme)} /> } 
-          />
-          <Route path="/themes" element = {<h1> themes go here </h1>} />
-          <Route path="/about" element = {<h1>info about game and me</h1>} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomeScreen themeClick={themeClick} curTheme={curThemeId}/>} />
+        <Route 
+         path="/battle"
+         element={ 
+          Themes[curThemeId] !== undefined ? 
+           <BattleScreen theme={Themes[curThemeId]} sides={initSides(Themes[curThemeId])} /> 
+           :
+           <HomeScreen themeClick={themeClick} curTheme={curThemeId}/>
+          } 
+        />
+        <Route path="/themes" element = {<h1> themes go here </h1>} />
+        <Route path="/about" element = {<h1>info about game and me</h1>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

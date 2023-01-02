@@ -1,1 +1,5 @@
-PokeTheme Battles is a web-based Pokemon Battle Simulator based on specific themes for battles. I started this project with intention to learn Javascript/Typescript and React Native. A month later, I can say I'm happy with how my first web-project turns out.
+PokeTheme Battles is a web-based Pokemon Battle Simulator. The premise is battling with select themes that determine the set of Pokemon for each trainer to battle with. 
+
+To play, select a theme via buttons on the side of the Pokeball, then press start. Then, choose a Pokemon to send out first based on your opponents team.
+
+Currently, it can only be played against a computer trainer whose decisions are made randomly. I have intentions to run it on a server and enable battling against other users.

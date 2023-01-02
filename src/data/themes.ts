@@ -4,18 +4,9 @@ import { randInt } from '../sim/functions'
 import Pokemon from '../sim/pokemon';
 
 export const Themes: {[theme: string]: themeData} = {
-    Blank: {
-        name: "Blank",
-        description: '',
-        setSize: 0,
-        pokeSet: [],
-        teamSize: 1,
-        generateTeam(){
-            return [];
-        }
-    },
     StarterBrawl: {
         name: "Starter Brawl",
+        id: "StarterBrawl",
         description: '',
         setSize: 15,
         pokeSet: [
@@ -64,8 +55,9 @@ export const Themes: {[theme: string]: themeData} = {
             return arr; // ARRAY OF TEAM
         }
     },
-    MonkeMashup: {
+    MonkeMoshpit: {
         name: "Monke Moshpit",
+        id: "MonkeMoshpit",
         description: '',
         setSize: 1,
         teamSize: 2,
