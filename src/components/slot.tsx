@@ -21,6 +21,7 @@ interface BarProps { occupant: Pokemon; }
 export const StatusBar = ({occupant}: BarProps) => {
 
     let percent = Math.floor(occupant.getCurHealth() / occupant.getStat().hp * 100);
+    let percentString = percent.toString() + "%";
 
     if (percent >= 51){
         var healthColor = '#64c735';
@@ -54,7 +55,7 @@ export const StatusBar = ({occupant}: BarProps) => {
             <div className='inner-bar' style={isMobile ? {marginLeft:'8%'} : {marginTop:'0%', marginLeft:'8%'}}>
                 <div><b style={isMobile ? {fontSize:'60%', paddingLeft: '5%'} : {fontSize:'80%', paddingLeft:'5%'}}> {percent}% </b></div>
                 <div className='health-bar'>
-                    <div className='percent-bar'style={isMobile ? {backgroundColor: healthColor, width:percent * 0.70} : { backgroundColor: healthColor, width: percent * 1.16}}></div>
+                    <div className='percent-bar'style={isMobile ? {backgroundColor: healthColor, width:percentString} : { backgroundColor: healthColor, width: percent * 1.16}}></div>
                 </div>
             </div>
 

@@ -8,36 +8,54 @@ import { isMobile } from 'react-device-detect'
 
 type BoxProps = { tr: Trainer; handleClick?: any };
 
-const StartSelectionBox = ({tr, handleClick}: BoxProps) => {
-    
-    var choiceClick = (index: number) => {
-        handleClick(index);
+const StartSelectionBox = (props: BoxProps) => {
+
+    const selectionBoxStyles = {
+        width: isMobile ? '85%' : '50%',
+        height: isMobile ? '40%' : '40%',
+        marginLeft: !isMobile 
+            ? props.tr.isComputer() ? '40%' : '-40%'
+            : props.tr.isComputer() ? '10%' : '-10%',
+        borderColor: props.tr.isComputer() ? 'pink' : '#C2FFB6', // make these more mild
+
     }
 
     return (
-        <div className="start-team-box">
-            <div style={{paddingTop: 75}}> <img src={tr.sprite} alt='tr'/> </div>
-            <div style={{height: 200, width: 200}}>
-                {tr.team[0] && <img src={tr.team[0].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(0)} alt='mon'/>}
-                {tr.team[1] && <img src={tr.team[1].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(1)} alt='mon'/>}
-                {tr.team[2] && <img src={tr.team[2].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(2)} alt='mon'/>}
-                {tr.team[3] && <img src={tr.team[3].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(3)} alt='mon'/>}
-                {tr.team[4] && <img src={tr.team[4].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(4)} alt='mon'/>}
-                {tr.team[5] && <img src={tr.team[5].getSprite('menu')} className="start-box-icon" onClick={() => choiceClick(5)} alt='mon'/>}
+        <div className="start-selection-box" style={selectionBoxStyles}>
+            <div className='start-box-trainer'> 
+              <img src={props.tr.sprite} className="start-box-trainer-icon" alt='tr'/> 
             </div>
-            
+            <div className='start-box-team'>
+                {
+                    props.tr.team.map((mon, i) => {
+                        return (
+                            <div className='start-box-pokemon'>
+                                <img 
+                                  key={mon.data.dex.name}
+                                  src={mon.getSprite('menu')} 
+                                  className="start-box-mon-icon" 
+                                  onClick={() => props.handleClick(i)} 
+                                  alt="mon"
+                                />
+                            </div>
+                        )                       
+                    })
+                }
+            </div>
         </div>
     )
 }
 
-const EndBox = (() => {
-    return (
-        <div> BATTLE OVER </div>
-    )
-})
+const EndBox = () => <h1> BATTLE OVER </h1>
 
 interface Props { theme: themeData; sides: Side[]; }
-interface State { battleStarted: boolean; battleOver: boolean }
+
+// TODO: does state have to be like this in a class?
+interface State { battleStarted: boolean; battleOver: boolean, battleStatus: string }
+
+const startBoxStyles = {
+    width: isMobile ? '98%' : '75%',
+}
 
 class BattleScreen extends React.Component<Props, State> {
     constructor(props: Props, state: State){
@@ -45,12 +63,13 @@ class BattleScreen extends React.Component<Props, State> {
 
         this.handleStartChoice = this.handleStartChoice.bind(this);
         this.endBattle = this.endBattle.bind(this);
-
     }
 
     state: State = {
         battleStarted: false,
-        battleOver: false
+        battleOver: false,
+        //TODO: remove these states, switch to battlestatus
+        battleStatus: "Selection"
     }
 
     handleStartChoice = (value: number) => {
@@ -76,13 +95,13 @@ class BattleScreen extends React.Component<Props, State> {
                 {!this.state.battleOver
                     ? this.state.battleStarted
                         ? <Battle sides={this.props.sides} activeTrainers={2} endFunc={this.endBattle} />
-                        : <div className='start-box'>
+                        : <div className='start-box' style={startBoxStyles}>
                             {s2Trs[1] ? <StartSelectionBox tr={s2Trs[1]}/> : <div style={{width: 300, height: 50}}/>}
                             <StartSelectionBox tr={s2Trs[0]}/>
-                            
+                            <div><h2>VS.</h2></div>
                             <StartSelectionBox tr={s1Trs[0]} handleClick={this.handleStartChoice}/>
                             {s1Trs[1] ? <StartSelectionBox tr={s1Trs[1]}/> : <div style={{width: 300, height: 50}}/>}
-                            </div>
+                          </div>
                     : <EndBox/>
                 }
                 

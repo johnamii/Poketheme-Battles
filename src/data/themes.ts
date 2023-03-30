@@ -61,7 +61,9 @@ export const Themes: {[theme: string]: themeData} = {
         description: '',
         setSize: 1,
         teamSize: 2,
-        pokeSet: [Pokedex.infernape, Pokedex.ambipom],
+        pokeSet: [
+            Pokedex.infernape, Pokedex.ambipom
+        ],
         generateTeam(){
             return [new Pokemon({dex:Pokedex.infernape, set: Pokedex.infernape.presets[0]}), new Pokemon({dex:Pokedex.ambipom, set: Pokedex.ambipom.presets[0]})];
         }
